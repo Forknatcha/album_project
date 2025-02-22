@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload and Manage Album</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        .album {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            display: inline-block;
+            width: 80%;
+        }
+        .thumbnail {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .full-image {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .full-image img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .full-image button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: red;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Create Album and Upload Images</h2>
+    <input type="text" id="albumName" placeholder="Enter Album Name">
+    <button onclick="createAlbum()">Create Album</button>
+    <br><br>
+    <select id="albumSelect"></select>
+    <input type="file" id="imageUpload" accept="image/*">
+    <br>
+    <div id="albums"></div>
+    <div id="fullImageContainer" class="full-image" onclick="closeFullImage()">
+        <button onclick="closeFullImage()">Close</button>
+        <img id="fullImage" alt="Full Image">
+    </div>
+
+    <script>
+        function createAlbum() {
+            const name = document.getElementById('albumName').value.trim();
+            if (name === '') {
+                alert('Please enter an album name.');
+                return;
+            }
+            
+            let albumContainer = document.createElement('div');
+            albumContainer.classList.add('album');
+            albumContainer.dataset.name = name;
+            
+            let title = document.createElement('h3');
+            title.innerText = name;
+            albumContainer.appendChild(title);
+            
+            document.getElementById('albums').appendChild(albumContainer);
+            
+            let option = document.createElement('option');
+            option.value = name;
+            option.innerText = name;
+            document.getElementById('albumSelect').appendChild(option);
+        }
+
+        document.getElementById('imageUpload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgContainer = document.createElement('div');
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('thumbnail');
+                    img.onclick = function() {
+                        document.getElementById('fullImage').src = e.target.result;
+                        document.getElementById('fullImageContainer').style.display = 'flex';
+                    };
+                    
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.innerText = 'Delete';
+                    deleteBtn.onclick = function() {
+                        imgContainer.remove();
+                    };
+                    
+                    imgContainer.appendChild(img);
+                    imgContainer.appendChild(deleteBtn);
+                    
+                    let selectedAlbumName = document.getElementById('albumSelect').value;
+                    let albums = document.getElementsByClassName('album');
+                    for (let album of albums) {
+                        if (album.dataset.name === selectedAlbumName) {
+                            album.appendChild(imgContainer);
+                            break;
+                        }
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function closeFullImage() {
+            document.getElementById('fullImageContainer').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
