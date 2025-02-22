@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root"; // เปลี่ยนตามที่ใช้
 $password = ""; // เปลี่ยนตามที่ใช้
-$dbname = "my_album"; // ชื่อฐานข้อมูล
+$dbname = "album_project"; // ชื่อฐานข้อมูล
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
