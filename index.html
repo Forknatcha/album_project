@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album Gallery</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>อัลบั้มรูป</h1>
+    <button onclick="document.getElementById('createAlbumModal').style.display='block'">สร้างอัลบั้ม</button>
+    
+    <div id="albums" class="albums"></div>
+
+    <!-- Create Album Modal -->
+    <div id="createAlbumModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('createAlbumModal').style.display='none'">&times;</span>
+            <h2>สร้างอัลบั้ม</h2>
+            <input type="text" id="albumName" placeholder="ชื่ออัลบั้ม">
+            <button onclick="createAlbum()">สร้าง</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
