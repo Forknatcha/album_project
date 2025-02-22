@@ -17,7 +17,6 @@
         <select name="album_id" required>
             <option value="">Select Album</option>
             <?php
-            // แสดงรายชื่ออัลบั้ม
             $conn = new mysqli("localhost", "username", "password", "album_project");
             $result = $conn->query("SELECT id, name FROM albums");
             while ($row = $result->fetch_assoc()) {
@@ -29,5 +28,33 @@
         <input type="file" name="photo" required>
         <button type="submit">Upload Photo</button>
     </form>
+
+    <h1>Delete Album</h1>
+    <form method="post" action="delete_album.php">
+        <select name="album_id" required>
+            <option value="">Select Album to Delete</option>
+            <?php
+            $conn = new mysqli("localhost", "username", "password", "album_project");
+            $result = $conn->query("SELECT id, name FROM albums");
+            while ($row = $result->fetch_assoc()) {
+                echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+            }
+            $conn->close();
+            ?>
+        </select>
+        <button type="submit">Delete Album</button>
+    </form>
+
+    <h1>View Albums</h1>
+    <ul>
+        <?php
+        $conn = new mysqli("localhost", "username", "password", "album_project");
+        $result = $conn->query("SELECT * FROM albums");
+        while ($row = $result->fetch_assoc()) {
+            echo "<li>" . $row['name'] . " - <a href='view_album.php?id=" . $row['id'] . "'>View Photos</a></li>";
+        }
+        $conn->close();
+        ?>
+    </ul>
 </body>
 </html>
