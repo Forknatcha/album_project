@@ -1,27 +1,33 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Album Gallery</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Album Project</title>
 </head>
 <body>
-    <h1>อัลบั้มรูป</h1>
-    <button onclick="document.getElementById('createAlbumModal').style.display='block'">สร้างอัลบั้ม</button>
-    
-    <div id="albums" class="albums"></div>
+    <h1>Create Album</h1>
+    <form method="post" action="create_album.php">
+        <input type="text" name="album_name" placeholder="Enter album name" required>
+        <button type="submit">Create Album</button>
+    </form>
 
-    <!-- Create Album Modal -->
-    <div id="createAlbumModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="document.getElementById('createAlbumModal').style.display='none'">&times;</span>
-            <h2>สร้างอัลบั้ม</h2>
-            <input type="text" id="albumName" placeholder="ชื่ออัลบั้ม">
-            <button onclick="createAlbum()">สร้าง</button>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+    <h1>Upload Photo</h1>
+    <form method="post" action="upload_photo.php" enctype="multipart/form-data">
+        <select name="album_id" required>
+            <option value="">Select Album</option>
+            <?php
+            // แสดงรายชื่ออัลบั้ม
+            $conn = new mysqli("localhost", "username", "password", "album_project");
+            $result = $conn->query("SELECT id, name FROM albums");
+            while ($row = $result->fetch_assoc()) {
+                echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+            }
+            $conn->close();
+            ?>
+        </select>
+        <input type="file" name="photo" required>
+        <button type="submit">Upload Photo</button>
+    </form>
 </body>
 </html>
